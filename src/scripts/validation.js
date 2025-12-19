@@ -19,11 +19,32 @@ const enableSubmitButton = () => {};  /* включает кнопку форм�
 const toggleButtonState = () => {};  /* включает или отключает кнопку формы в зависимости от валидности всех полей. 
 Если хотя бы одно из полей не прошло валидацию, кнопка формы должна быть неактивной. Если оба поля прошли — активной */
 
-const setEventListeners = () => {};  /* добавляет обработчики события input для всех полей формы. 
+const setEventListeners = (formElement, inputSelector, submitButtonSelector) => {
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));  // Получаем список полей ввода текущей формы
+  const buttonElement = Array.from(formElement.querySelector(submitButtonSelector));  // Получаем кнопку submit текущей формы
+};  /* добавляет обработчики события input для всех полей формы. 
 При каждом вводе проверяет валидность поля и вызывает функцию toggleButtonState */
 
 const clearValidation = () => {};  /* очищает ошибки валидации формы и делает кнопку неактивной.
 Принимает DOM-элемент формы и объект с настройками. Используйте эту функцию при открытии формы редактирования профиля. */
 
-const enableValidation = () => {};  /* отвечает за включение валидации всех форм. 
-Функция должна принимать все нужные функциям селекторы элементов как объект настроек. */
+const enableValidation = (validationSettings) => {
+    const formList = Array.from(document.querySelectorAll(validationSettings.formSelector));  // Получаем список всех форм
+    formList.forEach((formElement) => {
+      formElement.addEventListener('submit', function (evt) {
+        evt.preventDefault();  // Удаляем стандартное поведение браузера при отправке формы
+      });
+
+      setEventListeners(formElement, validationSettings.inputSelector, validationSettings.submitButtonSelector)
+    });
+};  /* отвечает за включение валидации всех форм. */
+
+
+/*const validationSettings = {
+  formSelector: ".popup__form",                      ✔
+  inputSelector: ".popup__input",                    ✔
+  submitButtonSelector: ".popup__button",            ✔
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};*/
