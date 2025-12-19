@@ -8,7 +8,10 @@ const showInputError = (formElement, inputElement, errorMessage, validationSetti
 };  /* отображает сообщение об ошибке под невалидным полем и добавляет соответствующие классы */
 
 const hideInputError = (formElement, inputElement, validationSettings) => {
-
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.remove(validationSettings.inputErrorClass);
+  errorElement.classList.remove(validationSettings.errorClass);
+  errorElement.textContent = '';
 };  /* скрывает сообщение об ошибке и удаляет классы, связанные с ошибкой */
 
 const checkInputValidity = (formElement, inputElement, validationSettings) => {
