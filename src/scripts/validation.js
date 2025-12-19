@@ -28,16 +28,20 @@ const hasInvalidInput = (inputList) => {
   })
 };  /* возвращает значение true, если хотя бы одно поле формы не прошло валидацию */
 
-const disableSubmitButton = () => {};  /* делает кнопку формы неактивной */
+const disableSubmitButton = (buttonElement, inactiveButtonClass) => {
+  buttonElement.classList.add(inactiveButtonClass);
+};  /* делает кнопку формы неактивной */
 
-const enableSubmitButton = () => {};  /* включает кнопку формы */
+const enableSubmitButton = (buttonElement, inactiveButtonClass) => {
+  buttonElement.classList.remove(inactiveButtonClass);
+};  /* включает кнопку формы */
 
 const toggleButtonState = (inputList, buttonElement, validationSettings) => {
   const inactiveClass = validationSettings.inactiveButtonClass;  // Получаем класс, который присвоим кнопке, если форма невалидна
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(inactiveClass);
+    disableSubmitButton(buttonElement, inactiveClass);
   } else {
-    buttonElement.classList.remove(inactiveClass);
+    enableSubmitButton(buttonElement, inactiveClass);
   }
 };  /* включает или отключает кнопку формы в зависимости от валидности всех полей. */
 
@@ -53,7 +57,7 @@ const setEventListeners = (formElement, validationSettings) => {
   });
 };  /* добавляет обработчики события input для всех полей формы. */
 
-const clearValidation = () => {};  /* очищает ошибки валидации формы и делает кнопку неактивной.
+const clearValidation = (formElement, validationSettings) => {};  /* очищает ошибки валидации формы и делает кнопку неактивной.
 Принимает DOM-элемент формы и объект с настройками. Используйте эту функцию при открытии формы редактирования профиля. */
 
 const enableValidation = (validationSettings) => {
@@ -66,13 +70,3 @@ const enableValidation = (validationSettings) => {
       setEventListeners(formElement, validationSettings)
     });
 };  /* отвечает за включение валидации всех форм. */
-
-
-/*const validationSettings = {
-  formSelector: ".popup__form",                      ✔
-  inputSelector: ".popup__input",                    ✔
-  submitButtonSelector: ".popup__button",            ✔
-  inactiveButtonClass: "popup__button_disabled",     ✔
-  inputErrorClass: "popup__input_type_error",        ✔
-  errorClass: "popup__error_visible",                ✔
-};*/
