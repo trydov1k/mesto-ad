@@ -1,14 +1,21 @@
 /* Из этого модуля должны экспортироваться только функции включения валидации и очистки ошибок. */
 
-const showInputError = () => {};  /* отображает сообщение об ошибке под невалидным полем и добавляет соответствующие классы */
+const showInputError = (formElement, inputElement, errorMessage, validationSettings) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  inputElement.classList.add(validationSettings.inputErrorClass);
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add(validationSettings.errorClass);
+};  /* отображает сообщение об ошибке под невалидным полем и добавляет соответствующие классы */
 
-const hideInputError = () => {};  /* скрывает сообщение об ошибке и удаляет классы, связанные с ошибкой */
+const hideInputError = (formElement, inputElement, validationSettings) => {
 
-const checkInputValidity = (formElement, inputElement) => {
+};  /* скрывает сообщение об ошибке и удаляет классы, связанные с ошибкой */
+
+const checkInputValidity = (formElement, inputElement, validationSettings) => {
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputElement.validationMessage, validationSettings);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, validationSettings);
   }
 };  /* проверяет валидность конкретного поля. */
 
@@ -37,7 +44,7 @@ const setEventListeners = (formElement, validationSettings) => {
   toggleButtonState(inputList, buttonElement);  // Включаем/выключаем кнопку отправки формы
   inputList.array.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
-      checkInputValidity(formElement, inputElement);  // Проверяем валидность полей формы
+      checkInputValidity(formElement, inputElement, validationSettings);  // Проверяем валидность полей формы
       toggleButtonState(inputList, buttonElement, validationSettings);  // Включаем/выключаем кнопку отправки формы
     })
   });
@@ -63,6 +70,6 @@ const enableValidation = (validationSettings) => {
   inputSelector: ".popup__input",                    ✔
   submitButtonSelector: ".popup__button",            ✔
   inactiveButtonClass: "popup__button_disabled",     ✔
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
+  inputErrorClass: "popup__input_type_error",        ✔
+  errorClass: "popup__error_visible",                ✔
 };*/
