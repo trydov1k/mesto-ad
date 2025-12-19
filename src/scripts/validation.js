@@ -10,7 +10,11 @@ const checkInputValidity = (formElement, inputElement) => {};  /* проверя
 выводит кастомное сообщение об ошибке: «Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы». 
 Текст ошибки разместить в data-* атрибуте поля ввода. */
 
-const hasInvalidInput = (inputList) => {};  /* возвращает значение true, если хотя бы одно поле формы не прошло валидацию */
+const hasInvalidInput = (inputList) => {
+  return inputList.some((input) => {
+    return !input.validity.valid;
+  })
+};  /* возвращает значение true, если хотя бы одно поле формы не прошло валидацию */
 
 const disableSubmitButton = () => {};  /* делает кнопку формы неактивной */
 
