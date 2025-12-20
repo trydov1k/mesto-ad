@@ -30,10 +30,12 @@ const hasInvalidInput = (inputList) => {
 
 const disableSubmitButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
+  buttonElement.removeAttribute('disabled');
 };  /* делает кнопку формы неактивной */
 
 const enableSubmitButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.remove(inactiveButtonClass);
+  buttonElement.setAttribute('disabled', true);
 };  /* включает кнопку формы */
 
 const toggleButtonState = (inputList, buttonElement, validationSettings) => {
@@ -47,17 +49,19 @@ const toggleButtonState = (inputList, buttonElement, validationSettings) => {
 
 const setEventListeners = (formElement, validationSettings) => {
   const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));  // Получаем список полей ввода текущей формы
-  const buttonElement = Array.from(formElement.querySelector(validationSettings.submitButtonSelector));  // Получаем кнопку submit текущей формы
-  toggleButtonState(inputList, buttonElement);  // Включаем/выключаем кнопку отправки формы
-  inputList.array.forEach((inputElement) => {
+  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);  // Получаем кнопку submit текущей формы
+  toggleButtonState(inputList, buttonElement, validationSettings);  // Включаем/выключаем кнопку отправки формы
+  inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, validationSettings);  // Проверяем валидность полей формы
       toggleButtonState(inputList, buttonElement, validationSettings);  // Включаем/выключаем кнопку отправки формы
-    })
+    });
   });
 };  /* добавляет обработчики события input для всех полей формы. */
 
-const clearValidation = (formElement, validationSettings) => {};  /* очищает ошибки валидации формы и делает кнопку неактивной.
+const clearValidation = (formElement, validationSettings) => {
+  
+};  /* очищает ошибки валидации формы и делает кнопку неактивной.
 Принимает DOM-элемент формы и объект с настройками. Используйте эту функцию при открытии формы редактирования профиля. */
 
 const enableValidation = (validationSettings) => {
@@ -67,6 +71,8 @@ const enableValidation = (validationSettings) => {
         evt.preventDefault();  // Удаляем стандартное поведение браузера при отправке формы
       });
 
-      setEventListeners(formElement, validationSettings)
+      setEventListeners(formElement, validationSettings);
     });
 };  /* отвечает за включение валидации всех форм. */
+
+export {clearValidation, enableValidation};
