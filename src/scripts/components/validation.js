@@ -1,12 +1,12 @@
 const showInputError = (formElement, inputElement, errorMessage, validationSettings) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.add(validationSettings.inputErrorClass);
   errorElement.textContent = errorMessage;
   errorElement.classList.add(validationSettings.errorClass);
 };
 
 const hideInputError = (formElement, inputElement, validationSettings) => {
-  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+  const errorElement = formElement.querySelector(`#${inputElement.id}-error`);
   inputElement.classList.remove(validationSettings.inputErrorClass);
   errorElement.classList.remove(validationSettings.errorClass);
   errorElement.textContent = '';
@@ -28,12 +28,13 @@ const hasInvalidInput = (inputList) => {
 
 const disableSubmitButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.add(inactiveButtonClass);
-  buttonElement.removeAttribute('disabled');
+  buttonElement.setAttribute('disabled', true);
 };
 
 const enableSubmitButton = (buttonElement, inactiveButtonClass) => {
   buttonElement.classList.remove(inactiveButtonClass);
-  buttonElement.setAttribute('disabled', true);
+  buttonElement.removeAttribute('disabled');
+  
 };
 
 const toggleButtonState = (inputList, buttonElement, validationSettings) => {
