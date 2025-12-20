@@ -60,7 +60,12 @@ const setEventListeners = (formElement, validationSettings) => {
 };  /* добавляет обработчики события input для всех полей формы. */
 
 const clearValidation = (formElement, validationSettings) => {
-  
+  const inputList = Array.from(formElement.querySelectorAll(validationSettings.inputSelector));
+  const buttonElement = formElement.querySelector(validationSettings.submitButtonSelector);
+  inputList.forEach((inputElement) => {
+    hideInputError(formElement, inputElement, validationSettings)
+  });
+  disableSubmitButton(buttonElement, validationSettings);
 };  /* очищает ошибки валидации формы и делает кнопку неактивной.
 Принимает DOM-элемент формы и объект с настройками. Используйте эту функцию при открытии формы редактирования профиля. */
 
