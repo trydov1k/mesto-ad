@@ -118,7 +118,9 @@ allPopups.forEach((popup) => {
 
 
 
-// Создание объекта с настройками валидации
+
+
+
 const validationSettings = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
@@ -128,6 +130,4 @@ const validationSettings = {
   errorClass: "popup__error_visible",
 };
 
-// включение валидации вызовом enableValidation
-// все настройки передаются при вызове
 enableValidation(validationSettings); 
