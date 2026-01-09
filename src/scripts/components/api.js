@@ -1,7 +1,7 @@
 const config = {
-  baseUrl: "https://mesto.nomoreparties.co/v1/{{apf-cohort-202}}",
+  baseUrl: "https://mesto.nomoreparties.co/v1/apf-cohort-202",
   headers: {
-    authorization: "{{01f7ef35-4f09-4e96-969a-598b7e530b1d}}",
+    authorization: "01f7ef35-4f09-4e96-969a-598b7e530b1d",
     "Content-Type": "application/json",
   },
 };
@@ -17,7 +17,7 @@ export const getUserInfo = () => {
   }).then(getResponseData);  // Проверяем успешность выполнения запроса
 };
 
-const getCardList = () => {
+export const getCardList = () => {
   return fetch(`${config.baseUrl}/cards`, {
     headers: config.headers,
   }).then(getResponseData);

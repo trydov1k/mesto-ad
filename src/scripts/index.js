@@ -6,10 +6,10 @@
   Из index.js не допускается что то экспортировать
 */
 
-import { initialCards } from "./cards.js";
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
+import { getCardList, getUserInfo} from "./components/api.js"
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -98,17 +98,6 @@ openCardFormButton.addEventListener("click", () => {
   openModalWindow(cardFormModalWindow);
 });
 
-// отображение карточек
-initialCards.forEach((data) => {
-  placesWrap.append(
-    createCardElement(data, {
-      onPreviewPicture: handlePreviewPicture,
-      onLikeIcon: likeCard,
-      onDeleteCard: deleteCard,
-    })
-  );
-});
-
 //настраиваем обработчики закрытия попапов
 const allPopups = document.querySelectorAll(".popup");
 allPopups.forEach((popup) => {
@@ -124,4 +113,20 @@ const validationSettings = {
   errorClass: "popup__error_visible",
 };
 
-enableValidation(validationSettings); 
+enableValidation(validationSettings);
+
+Promise.all([getCardList(), getUserInfo()])
+  .then(([cards, userData]) => {
+      cards.forEach((card) => {
+        placesWrap.append(
+            createCardElement(card, {
+              onPreviewPicture: handlePreviewPicture,
+              onLikeIcon: likeCard,
+              onDeleteCard: deleteCard,
+            })
+        );
+      });
+    })
+  .catch((err) => {
+    console.log(err);
+  });
