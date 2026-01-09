@@ -115,12 +115,6 @@ allPopups.forEach((popup) => {
   setCloseModalWindowEventListeners(popup);
 });
 
-
-
-
-
-
-
 const validationSettings = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
