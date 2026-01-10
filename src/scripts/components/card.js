@@ -1,11 +1,13 @@
 import { deleteCard as delCard, changeLikeCardStatus }  from "./api";
 
 export const likeCard = (likeButton, card) => {
-  const isLiked = likeButton.contains("card__like-button_is-active")
+  const isLiked = likeButton.classList.contains("card__like-button_is-active");
   
   changeLikeCardStatus(card._id, isLiked)
-    .then(() => {
+    .then((likedCard) => {
       likeButton.classList.toggle("card__like-button_is-active");
+      const LikeCountElement = likeButton.parentElement.querySelector(".card__like-count");
+      LikeCountElement.textContent = likedCard.likes.length;
     })
     .catch((err) => {
       console.log(err);
@@ -48,6 +50,8 @@ export const createCardElement = (
     if ((card.likes.length > 0) && (card.likes.some((user) => user._id === userId))) {
       likeButton.classList.toggle("card__like-button_is-active");
     }
+    const LikeCountElement = likeButton.parentElement.querySelector(".card__like-count");
+    LikeCountElement.textContent = card.likes.length;
   }
 
   if (onDeleteCard && (card.owner) && (card.owner._id === userId)) {
