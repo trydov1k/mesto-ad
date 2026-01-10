@@ -150,6 +150,9 @@ Promise.all([getCardList(), getUserInfo()])
               onDeleteCard: deleteCard,
             })
         );
+      profileTitle.textContent = userData.name;
+      profileDescription.textContent = userData.about;
+      profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
       });
     })
   .catch((err) => {
