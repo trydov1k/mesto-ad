@@ -48,6 +48,10 @@ const handlePreviewPicture = ({ name, link }) => {
 const handleProfileFormSubmit = (evt) => {
   evt.preventDefault();
 
+  const submitButton = profileForm.querySelector('.popup__button');
+  submitButton.textContent = "Сохранение...";
+  submitButton.disabled = true;
+
   setUserInfo({
     name: profileTitleInput.value,
     about: profileDescriptionInput.value,
@@ -59,11 +63,19 @@ const handleProfileFormSubmit = (evt) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
+      submitButton.disabled = false;
     });
 };
 
 const handleAvatarFromSubmit = (evt) => {
   evt.preventDefault();
+
+  const submitButton = avatarForm.querySelector(".popup__button");
+  submitButton.textContent = "Сохранение...";
+  submitButton.disabled = true;
 
   setUserAvatar(avatarInput.value)
     .then((userData) => {
@@ -72,11 +84,20 @@ const handleAvatarFromSubmit = (evt) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Сохранить';
+      submitButton.disabled = false;
     });
 };
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
+
+  const submitButton = cardForm.querySelector(".popup__button");
+  submitButton.textContent = "Создание...";
+  submitButton.disabled = true;
+
   let userId;
   getUserInfo()
     .then((userData) => {
@@ -105,6 +126,10 @@ const handleCardFormSubmit = (evt) => {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      submitButton.textContent = 'Создать';
+      submitButton.disabled = false;
     });
 };
 

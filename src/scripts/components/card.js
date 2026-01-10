@@ -47,11 +47,13 @@ export const createCardElement = (
 
   if (onLikeIcon) {
     likeButton.addEventListener("click", () => onLikeIcon(likeButton, card));
-    if ((card.likes.length > 0) && (card.likes.some((user) => user._id === userId))) {
+    if ((card.likes) && (card.likes.length > 0) && (card.likes.some((user) => user._id === userId))) {
       likeButton.classList.toggle("card__like-button_is-active");
     }
     const LikeCountElement = likeButton.parentElement.querySelector(".card__like-count");
-    LikeCountElement.textContent = card.likes.length;
+    if (card.likes) {
+      LikeCountElement.textContent = card.likes.length;
+    }
   }
 
   if (onDeleteCard && (card.owner) && (card.owner._id === userId)) {
