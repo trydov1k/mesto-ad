@@ -54,3 +54,10 @@ export const addNewCard = ({ name, link }) => {
     }),
   }).then(getResponseData);
 };
+
+export const deleteCard = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/${ cardId }`, {
+    method: "DELETE",
+    headers: config.headers,
+  }).then(getResponseData);
+};

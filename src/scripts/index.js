@@ -77,6 +77,11 @@ const handleAvatarFromSubmit = (evt) => {
 
 const handleCardFormSubmit = (evt) => {
   evt.preventDefault();
+  let userId;
+  getUserInfo()
+    .then((userData) => {
+      userId = userData._id;
+    })
   
   addNewCard({
     name: cardNameInput.value,
@@ -92,9 +97,10 @@ const handleCardFormSubmit = (evt) => {
             onPreviewPicture: handlePreviewPicture,
             onLikeIcon: likeCard,
             onDeleteCard: deleteCard,
-          }
+          },
+          userId
         )
-      );
+      )
       closeModalWindow(cardFormModalWindow);
     })
     .catch((err) => {
@@ -144,11 +150,15 @@ Promise.all([getCardList(), getUserInfo()])
   .then(([cards, userData]) => {
       cards.forEach((card) => {
         placesWrap.append(
-            createCardElement(card, {
-              onPreviewPicture: handlePreviewPicture,
-              onLikeIcon: likeCard,
-              onDeleteCard: deleteCard,
-            })
+            createCardElement(
+              card, 
+              {
+                onPreviewPicture: handlePreviewPicture,
+                onLikeIcon: likeCard,
+                onDeleteCard: deleteCard,
+              },
+              userData._id
+            )
         );
       profileTitle.textContent = userData.name;
       profileDescription.textContent = userData.about;
