@@ -9,7 +9,8 @@
 import { createCardElement, deleteCard, likeCard } from "./components/card.js";
 import { openModalWindow, closeModalWindow, setCloseModalWindowEventListeners } from "./components/modal.js";
 import { enableValidation, clearValidation } from "./components/validation.js";
-import { getCardList, getUserInfo, setUserInfo, setUserAvatar, addNewCard } from "./components/api.js"
+import { getCardList, getUserInfo, setUserInfo, setUserAvatar, addNewCard } from "./components/api.js";
+import { calculateCountUsers, calculateCountLikes, calculateMaxLikesFromOne, calculateChampionOfLikes, calculatePopularCards } from "./components/statistic.js";
 
 // DOM узлы
 const placesWrap = document.querySelector(".places__list");
@@ -37,6 +38,9 @@ const profileAvatar = document.querySelector(".profile__image");
 const avatarFormModalWindow = document.querySelector(".popup_type_edit-avatar");
 const avatarForm = avatarFormModalWindow.querySelector(".popup__form");
 const avatarInput = avatarForm.querySelector(".popup__input");
+
+const infoModalWindow = document.querySelector('.popup_type_info');
+const openInfoButton = document.querySelector('.header__logo');
 
 const handlePreviewPicture = ({ name, link }) => {
   imageElement.src = link;
@@ -133,6 +137,64 @@ const handleCardFormSubmit = (evt) => {
     });
 };
 
+const handleInfoModal = () => {
+
+  getCardList()
+    .then((cardsList) => {
+      const countUsers = calculateCountUsers(cardsList);
+      const countLikes = calculateCountLikes(cardsList);
+      const maxLikesFromOne = calculateMaxLikesFromOne(cardsList);
+      const championOfLikes = calculateChampionOfLikes(cardsList);
+
+      const popularCards = calculatePopularCards(cardsList);
+
+      const modalInfo = document.querySelector('.popup__content_content_info');
+
+      const statisticElement = document.getElementById("popup-info-definition-template").content.querySelector('.popup__info-item').cloneNode(true);
+      const popularCardElement = document.getElementById("popup-info-user-preview-template").content.querySelector('.popup__list-item_type_badge').cloneNode(true);
+
+
+      const statisticList = [statisticElement.cloneNode(true), statisticElement.cloneNode(true), statisticElement.cloneNode(true), statisticElement.cloneNode(true)];
+      statisticList[0].querySelector('.popup__info-term').textContent = 'Всего пользователей';
+      statisticList[0].querySelector('.popup__info-description').textContent = countUsers;
+      statisticList[1].querySelector('.popup__info-term').textContent = 'Всего лайков';
+      statisticList[1].querySelector('.popup__info-description').textContent = countLikes;
+      statisticList[2].querySelector('.popup__info-term').textContent = 'Максимально лайков от одного';
+      statisticList[2].querySelector('.popup__info-description').textContent = maxLikesFromOne;
+      statisticList[3].querySelector('.popup__info-term').textContent = 'Чемпион лайков';
+      statisticList[3].querySelector('.popup__info-description').textContent = championOfLikes;
+      
+      const popularCardsList = [popularCardElement.cloneNode(true), popularCardElement.cloneNode(true), popularCardElement.cloneNode(true)];
+      
+      popularCardsList[0].textContent = popularCards[0];
+      popularCardsList[1].textContent = popularCards[1];
+      popularCardsList[2].textContent = popularCards[2];
+      
+      if (modalInfo.querySelector('.popup__info').querySelector('.popup__info-item')) {
+        modalInfo.querySelector('.popup__info').querySelector('.popup__info-item').replaceWith();
+        modalInfo.querySelector('.popup__info').querySelector('.popup__info-item').replaceWith();
+        modalInfo.querySelector('.popup__info').querySelector('.popup__info-item').replaceWith();
+        modalInfo.querySelector('.popup__info').querySelector('.popup__info-item').replaceWith();
+      }
+      if (modalInfo.querySelector('.popup__list').querySelector('.popup__list-item_type_badge')) {
+        modalInfo.querySelector('.popup__list').querySelector('.popup__list-item_type_badge').replaceWith();
+        modalInfo.querySelector('.popup__list').querySelector('.popup__list-item_type_badge').replaceWith();
+        modalInfo.querySelector('.popup__list').querySelector('.popup__list-item_type_badge').replaceWith();
+      }
+      
+      // Выводим данные в модальное окно
+      statisticList.forEach((pair) => {        
+        modalInfo.querySelector('.popup__info').append(pair);
+      });
+      popularCardsList.forEach((popularCard) => {
+        modalInfo.querySelector('.popup__list').append(popularCard);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 // EventListeners
 profileForm.addEventListener("submit", handleProfileFormSubmit);
 cardForm.addEventListener("submit", handleCardFormSubmit);
@@ -152,6 +214,11 @@ profileAvatar.addEventListener("click", () => {
 openCardFormButton.addEventListener("click", () => {
   cardForm.reset();
   openModalWindow(cardFormModalWindow);
+});
+
+openInfoButton.addEventListener("click", () => {
+  openModalWindow(infoModalWindow);
+  handleInfoModal();
 });
 
 //настраиваем обработчики закрытия попапов
